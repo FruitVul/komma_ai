@@ -4,3 +4,5 @@ keras
 seaborn
 nltk
 ujson
+sklearn
+tensorflow 1.13.1

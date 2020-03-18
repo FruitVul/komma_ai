@@ -38,7 +38,9 @@ def main():
     df["input_embedding"] = df["embedding"].swifter.apply(make_input_embedding, args=(dictionary,))
     df["output_embedding"] = df["embedding"].swifter.apply(make_output_embedding, args=(dictionary,))
 
-    pre_processed_corpus = df.to_dict('index')
+    df_fin = df[["tokens","input_embedding","output_embedding"]]
+
+    pre_processed_corpus = df_fin.to_dict('index')
 
     with open(dictionary_path+'pre_processed_corpus.json', 'w') as fp:
         ujson.dump(pre_processed_corpus, fp)

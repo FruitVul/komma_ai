@@ -1,7 +1,7 @@
 import pandas as pd
-import os
 from nltk.tokenize import sent_tokenize
-
+import tensorflow as tf
+from keras.preprocessing.sequence import pad_sequences
 
 
 def get_sentence_corpus(text_file):
@@ -219,7 +219,7 @@ def embed_tokens(tokens, word_dictionary):
     return embedding
 
 
-def make_input_embedding(embeddings,word_dictionary):
+def make_input_embedding(embeddings, word_dictionary):
     input_embeddings = []
 
     komma_id = word_dictionary["KOMMA"]["id"]
@@ -243,4 +243,7 @@ def make_output_embedding(embeddings,word_dictionary):
         else:
             output_embeddings.append(0)
     return output_embeddings
+
+
+
 
