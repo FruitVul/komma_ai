@@ -16,7 +16,6 @@ def main():
     (see pre_processing)
     """
 
-
     package_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     europsarl_path = os.path.join(package_path, r"data\EUROPSARL\de")
 
@@ -45,7 +44,7 @@ def main():
 
     sentence_corpus = get_sentence_corpus(text_corpus)
 
-    with open('sentence_corpus_2020_03_16.txt', mode='w', encoding='utf-8') as f:
+    with open(os.path.join(package_path, "data\sentence_corpus\sentence_corpus.txt"), mode='w', encoding='utf-8') as f:
         for sentence in sentence_corpus:
             f.write("%s\n" % sentence)
 

@@ -1,0 +1,6 @@
+pandas
+numpy
+keras
+seaborn
+nltk
+ujson

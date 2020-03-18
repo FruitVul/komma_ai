@@ -3,6 +3,7 @@ import os
 from nltk.tokenize import sent_tokenize
 
 
+
 def get_sentence_corpus(text_file):
     """Returns the sentences of a text_file
     Arguments:
@@ -91,6 +92,13 @@ def remove_special_chars(text, remove_chars="<.:-()\"{}\´!?>@%;&[]+~#_|$€=/")
 
 
 def tokenize(sentence):
+    """Returns the tokens of a sentence
+        Arguments:
+            sentence(string): sentence.
+
+        Returns:
+            tokens(list): List of tokens of the sentence
+    """
     split_sentence = split_up_sentence(sentence)
     tokens = []
     for idx,split in enumerate(split_sentence):
@@ -98,7 +106,15 @@ def tokenize(sentence):
         tokens.append(token)
     return tokens
 
+
 def split_up_sentence(sentence):
+    """Splits up a sentence in parts. A comma has its own part.
+        Arguments:
+            sentence(string): sentence.
+
+        Returns:
+            split_sentence(list): List of the individual parts of the input sentence
+    """
     sentence_parts = sentence.split(" ")
     split_sentence = []
     for i, part in enumerate(sentence_parts):
@@ -113,8 +129,18 @@ def split_up_sentence(sentence):
     return split_sentence
 
 
-def get_token(idx,split,sentence_len):
-    if check_if_number_split(split):
+def get_token(idx, split, sentence_len):
+    """Applies rules to a split from a split up sentence list to return a special token
+        Arguments:
+            idx(integer): Position in the split up sentence.
+            split(string): The split as string.
+            sentence_len(integer): The length of the split up sentence.
+
+        Returns:
+            special_token(str): The special token.
+    """
+
+    if check_if_number(split):
         return "DIGIT"
     if len(split) == 1 and split != "," and split != " ":
         return "CHAR"
@@ -127,10 +153,17 @@ def get_token(idx,split,sentence_len):
     if "," in split:
         return "KOMMA"
     else:
-        return split
+        return split.lower()
 
 
-def check_if_number_split(split):
+def check_if_number(split):
+    """Checks if the split is mostly a number
+        Arguments:
+            split(string): The split as string.
+        Returns:
+            boolean: True if its mostly a number
+    """
+
     n_number = 1
     n_str = 1
     for char in split:
@@ -142,3 +175,72 @@ def check_if_number_split(split):
     ratio = n_number / (n_str+n_number)
 
     return True if ratio > 0.5 else False
+
+
+def create_word_dict(tokenized_sentences,cut_off_occurrence=2):
+    tokens = []
+    for i, tokenized_sentence in enumerate(tokenized_sentences):
+        tokens += tokenized_sentence
+
+    word_df = pd.DataFrame(data={"tokens":tokens})
+    word_occurrences = word_df["tokens"].value_counts()
+    word_dictionary = word_occurrences.to_dict()
+
+    i = 0
+
+    for word, n in word_dictionary.items():
+        if n >= cut_off_occurrence:
+            word_dictionary[word] = {"n": n, "id": i}
+            i += 1
+        else:
+            word_dictionary[word] = {"n": n, "id": i}
+
+    word_dictionary["UNKOWN"] = {"n": n, "id": i+1}
+
+    return word_dictionary
+
+
+def embed_tokens(tokens, word_dictionary):
+    """Embeds the tokens as integers from a word_dictionary
+        Arguments:
+            tokens(list): Tokens of a sentence in a list.
+            word_dictionary(dict): Dictionary with n: Number of occurrences and id of words.
+
+        Returns:
+            embedding(list): Embedding of a sentence in a list.
+    """
+
+    embedding = []
+    for token in tokens:
+        if token in word_dictionary.keys():
+            embedding.append(word_dictionary[token]["id"])
+        else:
+            embedding.append(word_dictionary["UNKOWN"]["id"])
+    return embedding
+
+
+def make_input_embedding(embeddings,word_dictionary):
+    input_embeddings = []
+
+    komma_id = word_dictionary["KOMMA"]["id"]
+
+    for embedding in embeddings:
+        if embedding == komma_id:
+            input_embeddings.append(word_dictionary["SPACE"]["id"])
+        else:
+            input_embeddings.append(embedding)
+    return input_embeddings
+
+
+def make_output_embedding(embeddings,word_dictionary):
+    output_embeddings = []
+
+    komma_id = word_dictionary["KOMMA"]["id"]
+
+    for embedding in embeddings:
+        if embedding == komma_id:
+            output_embeddings.append(1)
+        else:
+            output_embeddings.append(0)
+    return output_embeddings
+
