@@ -2,6 +2,7 @@ import json
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
+import syllables
 
 from lib.pre_processing import tokenize, embed_tokens, make_input_embedding,split_up_sentence
 
@@ -56,3 +57,25 @@ class Inference:
         output_sentence = ''.join(output_sentence)
 
         return output_sentence, pred_list
+
+    def german_flesch_score(self,sentences):
+        asl = 0
+        asw = 0
+        n_sentences = len(sentences)
+        for sentence in sentences:
+            original_sentence_split = split_up_sentence(sentence)
+            n_words = len(original_sentence_split)
+            asl += len(original_sentence_split)
+            syllables_count = 0
+            for split in original_sentence_split:
+                syllables_count += syllables.estimate(split)
+            asw += syllables_count / n_words
+
+        asl /= n_sentences
+        asw /= n_sentences
+        flesch_german = 180 - asl - (58.5 * asw)
+
+        return flesch_german
+
+
+
