@@ -4,7 +4,7 @@ from keras.preprocessing.sequence import pad_sequences
 import numpy as np
 import syllables
 
-from lib.pre_processing import tokenize, embed_tokens, make_input_embedding,split_up_sentence
+from komma_ai.pre_processing import tokenize, embed_tokens, make_input_embedding,split_up_sentence
 
 
 class Inference:

@@ -1,7 +1,7 @@
 import os
 import pyperclip
 
-from lib.inference import Inference
+from komma_ai.inference import Inference
 
 def cmd_input():
     package_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))

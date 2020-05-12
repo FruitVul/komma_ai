@@ -5,7 +5,7 @@ import json
 import codecs
 import os
 
-from lib.pre_processing import get_sentence_corpus,replace_abbreviations
+from komma_ai.pre_processing import get_sentence_corpus,replace_abbreviations
 
 
 def main():

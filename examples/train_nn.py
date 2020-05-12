@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 from keras.preprocessing.sequence import pad_sequences
 
-from lib.neural_network import NeuralNetwork
+from komma_ai.neural_network import NeuralNetwork
 
 
 def main():

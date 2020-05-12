@@ -5,7 +5,7 @@ import json
 import codecs
 import os
 
-from lib.pre_processing import remove_special_chars
+from komma_ai.pre_processing import remove_special_chars
 
 
 def main():

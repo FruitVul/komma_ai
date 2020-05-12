@@ -1,6 +1,6 @@
 import os
 
-from lib.inference import Inference
+from komma_ai.inference import Inference
 
 def simple_test():
     package_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))

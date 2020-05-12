@@ -4,7 +4,7 @@ import os
 import swifter
 import ujson
 
-from lib.pre_processing import tokenize, create_word_dict, embed_tokens,make_input_embedding, make_output_embedding
+from komma_ai.pre_processing import tokenize, create_word_dict, embed_tokens,make_input_embedding, make_output_embedding
 
 
 def main():
