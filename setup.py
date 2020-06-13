@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="komma_ai",
-    version="0.0.1",
+    version="0.1.1",
     author="Philipp Huismann",
     author_email="phil.huismann@gmail.com",
     description="A package to automatically put commas where they belong with machine learning.",

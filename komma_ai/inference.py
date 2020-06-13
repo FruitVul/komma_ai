@@ -1,6 +1,8 @@
 import json
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
+import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
 import numpy as np
 import syllables
 
@@ -8,22 +10,28 @@ from komma_ai.pre_processing import tokenize, embed_tokens, make_input_embedding
 
 
 class Inference:
-    def __init__(self,dictionary_path):
+    def __init__(self, dictionary_path, sess):
         self.model = None
         self.dictionary = self.load_dictionary(dictionary_path)
+        self.graph = None
+        self.sess = sess
 
     @staticmethod
     def load_dictionary(dictionary_path):
         with open(dictionary_path) as handle:
             return json.loads(handle.read())
 
-    def load_model(self,model_path):
+    def load_model(self, model_path):
         print("Loading model...")
+        set_session(self.sess)
         self.model = load_model(model_path)
-        print("...successful!")
+        self.graph = tf.get_default_graph()
 
     def predict(self, padded_embedding):
-        return self.model.predict(padded_embedding)
+        with self.graph.as_default():
+            set_session(self.sess)
+            prediction = self.model.predict(padded_embedding)
+        return prediction
 
     def predict_comma(self, sentence, nn_settings=None):
         if nn_settings is None:
@@ -42,7 +50,9 @@ class Inference:
                                      padding="post", truncating="post", value=0.0)
 
         X = np.array([np.array(xi) for xi in padded_input])
-        predictions = self.model.predict(X)
+        with self.graph.as_default():
+            set_session(self.sess)
+            predictions = self.model.predict(X)
 
         pred_list = []
         output_sentence = [" " if split == "," else split for split in original_sentence_split]
@@ -58,7 +68,7 @@ class Inference:
 
         return output_sentence, pred_list
 
-    def german_flesch_score(self,sentences):
+    def german_flesch_score(self, sentences):
         asl = 0
         asw = 0
         n_sentences = len(sentences)
