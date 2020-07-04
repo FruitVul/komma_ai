@@ -1,10 +1,6 @@
-pandas
 syllables
+tensorflow
+pandas
 numpy
 keras
-seaborn
-nltk
-ujson
-sklearn
-tensorflow-gpu==1.15.2
 pyperclip

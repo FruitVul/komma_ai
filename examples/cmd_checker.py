@@ -1,13 +1,16 @@
 import os
 import pyperclip
+import tensorflow as tf
 
 from komma_ai.inference import Inference
+
 
 def cmd_input():
     package_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     dictionary_path = os.path.join(package_path, r"data\sentence_corpus\dictionary.json")
 
-    inference = Inference(dictionary_path=dictionary_path)
+    sess = tf.Session()
+    inference = Inference(dictionary_path=dictionary_path, sess=sess)
     inference.load_model(model_path=os.path.join(package_path, r"data\models\baseline.h5"))
 
     while True:
@@ -20,8 +23,7 @@ def cmd_input():
         print("Input:",input_sentence)
         print(">>>>",output_sentence)
         print(">>>>",pred_list)
-        print("Flesch Sorce:",flesch_score)
-
+        print("Flesch Score:", flesch_score)
 
 
 if __name__ == "__main__":

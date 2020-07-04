@@ -1,2 +1,11 @@
-/dist/
+venv
+*.pyc
+.env
+*.sqlite3
+data
+.data
+/data/
+model.h5
+model.json
 /build/
+.idea

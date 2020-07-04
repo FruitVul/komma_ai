@@ -1,7 +1,5 @@
 import pandas as pd
 from nltk.tokenize import sent_tokenize
-import tensorflow as tf
-from keras.preprocessing.sequence import pad_sequences
 
 
 def get_sentence_corpus(text_file):
@@ -19,7 +17,7 @@ def get_sentence_corpus(text_file):
             text_sentences = fix_year_error(text_sentences)
             text_sentences = sent_tokenize(text_sentences)
             for sentence in text_sentences:
-                sentence = sentence.replace("PUNKT",". ")
+                sentence = sentence.replace("PUNKT", ". ")
                 sentences.append(sentence.replace("daß", "dass").replace("muß", "muss"))
     return sentences
 
@@ -49,7 +47,6 @@ def replace_abbreviations(text):
     if "Evtl." in text:
         text = text.replace("Evtl.", "Eventuell")
 
-
     return text
 
 
@@ -62,9 +59,9 @@ def fix_year_error(text):
             text(string): text with PUNKT as identifier.
     """
 
-    months = ["Januar","Februar","März","April",
-              "Mai","Juni","Juli","August",
-              "September","Oktober","November","Dezember"]
+    months = ["Januar", "Februar", "März", "April",
+              "Mai", "Juni", "Juli", "August",
+              "September", "Oktober", "November", "Dezember"]
     for i,char in enumerate(text):
         if char.isdigit():
             if i + 14 < len(text):
@@ -101,8 +98,8 @@ def tokenize(sentence):
     """
     split_sentence = split_up_sentence(sentence)
     tokens = []
-    for idx,split in enumerate(split_sentence):
-        token = get_token(idx,split,len(split_sentence))
+    for idx, split in enumerate(split_sentence):
+        token = get_token(idx, split, len(split_sentence))
         tokens.append(token)
     return tokens
 
@@ -177,7 +174,7 @@ def check_if_number(split):
     return True if ratio > 0.5 else False
 
 
-def create_word_dict(tokenized_sentences,cut_off_occurrence=2):
+def create_word_dict(tokenized_sentences, cut_off_occurrence=2):
     tokens = []
     for i, tokenized_sentence in enumerate(tokenized_sentences):
         tokens += tokenized_sentence
@@ -215,7 +212,8 @@ def embed_tokens(tokens, word_dictionary):
         if token in word_dictionary.keys():
             embedding.append(word_dictionary[token]["id"])
         else:
-            embedding.append(word_dictionary["UNKOWN"]["id"])
+            # TODO: This here should fetch an UNKNOWN id
+            embedding.append(list(word_dictionary.values())[-2]["id"])
     return embedding
 
 

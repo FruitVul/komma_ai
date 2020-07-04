@@ -1,7 +1,6 @@
 import pandas as pd
 import codecs
 import os
-import swifter
 import ujson
 
 from komma_ai.pre_processing import tokenize, create_word_dict, embed_tokens,make_input_embedding, make_output_embedding

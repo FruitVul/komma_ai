@@ -2,6 +2,7 @@ import os
 
 from komma_ai.inference import Inference
 
+
 def simple_test():
     package_path = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     dictionary_path = os.path.join(package_path, r"data\sentence_corpus\dictionary.json")

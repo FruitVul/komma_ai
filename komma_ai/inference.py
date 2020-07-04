@@ -8,6 +8,8 @@ import syllables
 
 from komma_ai.pre_processing import tokenize, embed_tokens, make_input_embedding,split_up_sentence
 
+# TODO: Docstrings
+
 
 class Inference:
     def __init__(self, dictionary_path, sess):
@@ -68,6 +70,7 @@ class Inference:
 
         return output_sentence, pred_list
 
+    @staticmethod
     def german_flesch_score(self, sentences):
         asl = 0
         asw = 0
