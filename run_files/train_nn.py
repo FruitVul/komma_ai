@@ -26,8 +26,6 @@ def main():
 
     df_len = df[df["len"] <= max_len]
 
-    S = df_len["tokens"]
-
     X = pad_sequences(df_len["input_embedding"], maxlen=max_len, dtype="int32",
                       padding="post", truncating="post", value=0.0)
     y = pad_sequences(df_len["output_embedding"], maxlen=max_len, dtype="int32",

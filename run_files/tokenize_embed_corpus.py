@@ -2,8 +2,9 @@ import pandas as pd
 import codecs
 import os
 import ujson
+import swifter
 
-from komma_ai.pre_processing import tokenize, create_word_dict, embed_tokens,make_input_embedding, make_output_embedding
+from komma_ai.pre_processing import tokenize, create_word_dict, embed_tokens, make_input_embedding, make_output_embedding
 
 
 def main():
@@ -37,20 +38,12 @@ def main():
     df["input_embedding"] = df["embedding"].swifter.apply(make_input_embedding, args=(dictionary,))
     df["output_embedding"] = df["embedding"].swifter.apply(make_output_embedding, args=(dictionary,))
 
-    df_fin = df[["tokens","input_embedding","output_embedding"]]
+    df_fin = df[["tokens", "input_embedding", "output_embedding"]]
 
     pre_processed_corpus = df_fin.to_dict('index')
 
     with open(dictionary_path+'pre_processed_corpus.json', 'w') as fp:
         ujson.dump(pre_processed_corpus, fp)
-
-
-
-
-
-
-
-
 
 
 

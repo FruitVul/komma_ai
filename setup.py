@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="komma_ai",
-    version="1",
+    version="1.0.0",
     author="Philipp Huismann",
     author_email="phil.huismann@gmail.com",
     description="A package to automatically performe inference, prediction and correction on german sentences.",

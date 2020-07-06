@@ -35,9 +35,24 @@ def main():
     for recipe in recipes_json:
         instruction = recipe["Instructions"]
         instruction = replace_abbreviations(instruction)
-        recipe_texts.append(instruction.replace(".",". "))
+        recipe_texts.append(instruction.replace(".", ". "))
 
-    text_corpus = europsarl_content + recipe_texts
+    three_path = os.path.join(package_path, r"data\3MILLSENTENCES\deu_news_2015_3M-sentences.txt")
+
+    with codecs.open(three_path, "r", 'utf-8') as f:
+        sentences = f.readlines()
+        processed_sentences = []
+        for sentence in sentences[0:]:
+            if len(sentence) > 8:
+                split_sentence = sentence.split(";")[-1]
+                split_sentence = split_sentence.rstrip()
+                processed_sentences.append(split_sentence)
+
+    print("Europsarl Sentences:",len(europsarl_content))
+    print("Recipe Sentences:", len(recipe_texts))
+    print("3MIL Sentences:", len(processed_sentences))
+    text_corpus = europsarl_content + recipe_texts + processed_sentences
+    print("Final N Sentences:", len(text_corpus))
 
     sentence_corpus = get_sentence_corpus(text_corpus)
 

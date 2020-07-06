@@ -7,12 +7,12 @@ from keras.layers import Embedding
 from keras.optimizers import RMSprop, Adam
 from keras.models import load_model
 
+
 class NeuralNetwork:
-    def __init__(self,input_dim,output_dim,max_len,optimizer="adam"):
+    def __init__(self, input_dim, output_dim, max_len, optimizer="adam"):
 
         self.optimizer = Adam(lr=0.001) if optimizer =="adam" else RMSprop(lr=0.001)
 
-        self.model = Sequential()
         weight_decay = 1e-4
 
         self.model = Sequential()
@@ -30,10 +30,10 @@ class NeuralNetwork:
         self.model.add(Dense(max_len, activation='sigmoid'))
 
     def compile(self):
-        self.model.compile(loss='binary_crossentropy', optimizer=self.optimizer,metrics=['accuracy'])
+        self.model.compile(loss='binary_crossentropy', optimizer=self.optimizer, metrics=['accuracy'])
         self.model.summary()
 
-    def fit(self,batch_size, epochs, X_train, y_train, X_test, y_test,verbose=1):
+    def fit(self, batch_size, epochs, X_train, y_train, X_test, y_test,verbose=1):
         return self.model.fit(X_train, y_train, batch_size=batch_size,
                               epochs=epochs, validation_data=(X_test, y_test), verbose=verbose)
 
