@@ -41,9 +41,11 @@ def main():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
+    del X, y
+
     nn = NeuralNetwork(input_dim, output_dim, max_len, optimizer="adam")
     nn.compile()
-    nn.fit(128, 5, X_train, y_train, X_test, y_test, verbose=2)
+    nn.fit(32, 5, X_train, y_train, X_test, y_test, verbose=2)
     nn.save_model(os.path.join(package_path, r"data\models\baseline.h5"))
 
 

@@ -33,7 +33,7 @@ class NeuralNetwork:
         self.model.compile(loss='binary_crossentropy', optimizer=self.optimizer, metrics=['accuracy'])
         self.model.summary()
 
-    def fit(self, batch_size, epochs, X_train, y_train, X_test, y_test,verbose=1):
+    def fit(self, batch_size, epochs, X_train, y_train, X_test, y_test, verbose=1):
         return self.model.fit(X_train, y_train, batch_size=batch_size,
                               epochs=epochs, validation_data=(X_test, y_test), verbose=verbose)
 
