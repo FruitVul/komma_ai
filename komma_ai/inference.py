@@ -1,12 +1,15 @@
 import json
-from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 import tensorflow as tf
 from tensorflow.python.keras.backend import set_session
 import numpy as np
 import syllables
 
-from komma_ai.pre_processing import tokenize, embed_tokens, make_input_embedding,split_up_sentence
+from tensorflow.python.framework import ops
+
+
+from komma_ai.pre_processing import tokenize, embed_tokens, make_input_embedding, split_up_sentence
 
 # TODO: Docstrings
 
@@ -27,7 +30,7 @@ class Inference:
         print("Loading model...")
         set_session(self.sess)
         self.model = load_model(model_path)
-        self.graph = tf.get_default_graph()
+        self.graph = ops.get_default_graph()
 
     def predict(self, padded_embedding):
         with self.graph.as_default():
@@ -52,9 +55,9 @@ class Inference:
                                      padding="post", truncating="post", value=0.0)
 
         X = np.array([np.array(xi) for xi in padded_input])
-        with self.graph.as_default():
-            set_session(self.sess)
-            predictions = self.model.predict(X)
+
+        set_session(self.sess)
+        predictions = self.model.predict(X)
 
         pred_list = []
         output_sentence = [" " if split == "," else split for split in original_sentence_split]
@@ -71,7 +74,7 @@ class Inference:
         return output_sentence, pred_list
 
     @staticmethod
-    def german_flesch_score(self, sentences):
+    def german_flesch_score(sentences):
         asl = 0
         asw = 0
         n_sentences = len(sentences)
