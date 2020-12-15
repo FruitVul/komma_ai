@@ -8,4 +8,3 @@ ToDo:
 - GAN based
 - Command Line API
 
-Email @ phil.huismann@gmail.com
